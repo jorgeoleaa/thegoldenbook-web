@@ -1,0 +1,11 @@
+#Archivos y directorios generados por eclipse
+.settings/
+*.classpath
+*.project
+
+#Directorios de compilación
+target/
+build/
+
+#Otros archivos generados 
+*.log

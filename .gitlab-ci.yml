@@ -1,0 +1,77 @@
+variables:
+    MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
+    APP_VERSION: $CI_PIPELINE_IID
+
+image: maven:latest
+
+stages:
+    - build
+    - test
+    - package
+    - deploy
+
+cache:
+    paths:
+        - .m2/repository 
+        - target
+
+build_job:
+    stage: build
+    script:
+        - echo "Maven compile started"
+        - "mvn compile"
+
+.test_job:
+    stage: test
+    script:
+        - echo "Maven test started"
+        - "mvn test"
+
+package_job:
+    stage: package
+    script:
+        - echo "Maven package started"
+        - echo $APP_VERSION > src/main/webapp/version.html
+        - "mvn package"
+    artifacts:
+        paths:
+            - target/*.war
+
+deploy_staging_job:
+    stage: deploy
+    rules:
+        - if: '$CI_COMMIT_REF_NAME == "main"'
+        - if: '$CI_ENVIRONMENT_NAME == "staging"'
+    before_script:
+        - apt-get update -y && apt-get install openssh-client -y 
+        - eval $(ssh-agent -s) 
+        - echo "$AWS_SSH_KEY_VARIABLE"  | tr -d '\r'  | ssh-add - 
+        - mkdir -p ~/.ssh
+        - chmod 700 ~/.ssh
+    script:
+        - scp -o StrictHostKeyChecking=no target/TheGoldenBook.war admin@$AWS_HOSTNAME:TheGoldenBook.war
+        - ssh -o StrictHostKeyChecking=no admin@$AWS_HOSTNAME "sudo cp TheGoldenBook.war /opt/wildfly/standalone/deployments/TheGoldenBook.war"
+        - sleep 5
+        #- curl $CI_ENVIRONMENT_URL:8080/TheGoldenBook/version.html | grep $APP_VERSION
+    environment:
+        name: staging
+
+deploy_production_job:
+    stage: deploy
+    rules:
+        - if: '$CI_COMMIT_REF_NAME == "main"'
+        - if: '$CI_ENVIRONMENT_NAME == "production"'
+    before_script:
+        - apt-get update -y && apt-get install openssh-client -y 
+        - eval $(ssh-agent -s)
+        - echo "$AWS_SSH_KEY_VARIABLE"  | tr -d '\r'  | ssh-add - 
+        - mkdir -p ~/.ssh
+        - chmod 700 ~/.ssh
+    script:
+        - scp -o StrictHostKeyChecking=no target/TheGoldenBook.war admin@$AWS_HOSTNAME:TheGoldenBook.war
+        - ssh -o StrictHostKeyChecking=no admin@$AWS_HOSTNAME "sudo cp TheGoldenBook.war /opt/wildfly/standalone/deployments/TheGoldenBook.war"
+        - sleep 5
+        #- curl $CI_ENVIRONMENT_URL:8080/TheGoldenBook/version.html | grep $APP_VERSION
+    environment:
+        name: production
+    when: manual

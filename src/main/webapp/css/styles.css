@@ -1,0 +1,470 @@
+@charset "UTF-8";
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    header {
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+    }
+
+    #idiomas a {
+        color: white;
+        margin-right: 15px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    #idiomas a:hover {
+        text-decoration: underline;
+    }
+
+    #busqueda {
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    #search-bar-container {
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    #search-bar-container form {
+        display: flex;
+        align-items: center;
+    }
+
+    #search-bar-container input[type="text"] {
+        padding: 5px;
+        font-size: 16px;
+        margin-right: 10px;
+    }
+
+    #search-bar-container input[type="submit"] {
+        padding: 6px 15px;
+        font-size: 16px;
+        background-color: #ffcc00;
+        border: none;
+        cursor: pointer;
+    }
+
+    #search-bar-container input[type="submit"]:hover {
+        background-color: #e6b800;
+    }
+
+    /* Resultados de búsqueda */
+    #busqueda #resultados-busqueda {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        margin-left: 10px;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 250px;
+        max-height: 300px;
+        overflow-y: auto;
+        border-radius: 5px;
+        display: none; /* Inicialmente oculto, se debe mostrar con JavaScript */
+    }
+
+    #busqueda #resultados-busqueda ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    #busqueda #resultados-busqueda li {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    #busqueda #resultados-busqueda li a {
+        color: #333;
+        text-decoration: none;
+    }
+
+    #busqueda #resultados-busqueda li a:hover {
+        background-color: #f0f0f0;
+    }
+
+    #image-container img {
+        height: 50px;
+    }
+
+    #button-container {
+        display: flex;
+        align-items: center;
+    }
+
+    #button-container button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    #button-container button img {
+        width: 30px;
+        height: 30px;
+    }
+
+    #user-nav-menu {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        background-color: #333;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    #user-nav-menu ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    #user-nav-menu li {
+        padding: 10px;
+        text-align: left;
+    }
+
+    #user-nav-menu li a {
+        color: white;
+        text-decoration: none;
+    }
+
+    #user-nav-menu li a:hover {
+        background-color: #444;
+    }
+
+    #imagen-user {
+        position: relative;
+    }
+
+    #imagen-user img {
+        width: 25px;
+        height: 25px;
+        margin-left: 10px;
+    }
+
+    #imagen-user:hover ul {
+        display: block;
+    }
+
+    #imagen-user ul {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 30px;
+    }
+    
+       /* Contenedor principal del detalle del libro */
+    #detail-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 20px;
+        background-color: #fff;
+    }
+
+    /* Contenedor de las imágenes del libro */
+    #book-images-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 300px;
+    }
+
+    /* Contenedor de la imagen principal */
+    #main-image-container img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Contenedor de las imágenes pequeñas */
+    #small-images-container {
+        display: flex;
+        gap: 10px;
+    }
+
+    /* Contenedor de cada imagen pequeña */
+    #small-image-container img {
+        width: 60px;
+        height: auto;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    #small-image-container img:hover {
+        transform: scale(1.1);
+    }
+
+    /* Contenedor de los datos del libro */
+    #book-data-container {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* Estilos para los títulos */
+    #book-data-container h1, #book-data-container h3, #book-data-container h4 {
+        margin: 0;
+        font-size: 1.5em;
+        color: #333;
+    }
+
+    /* Estilos para los botones */
+    #addToCart {
+        background-color: #ffcc00;
+        border: none;
+        padding: 10px;
+        font-size: 1.2em;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    #addToCart:hover {
+        background-color: #e6b800;
+    }
+
+    /* Estilo del formato del libro */
+    #formato-div label {
+        font-size: 1.1em;
+        color: #333;
+    }
+
+    /* Estilo para la información de envío */
+    #envio-text label {
+        font-size: 1.1em;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    #envio-text img {
+        width: 20px;
+        height: auto;
+    }
+
+    /* Estilos para el contenedor de valoraciones */
+    #valoraciones-container {
+        margin-top: 40px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilo de cada valoración */
+    #valoracion-container {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    #valoracion-container h4 {
+        font-size: 1.2em;
+        margin: 0;
+        color: #333;
+    }
+
+    #valoracion-container p {
+        margin: 5px 0;
+        color: #555;
+    }
+
+    /* Estilo de los botones de edición y eliminación */
+    #valoracion-container button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        color: #ffcc00;
+        text-decoration: underline;
+    }
+
+    #valoracion-container button:hover {
+        color: #e6b800;
+    }
+
+    /* Estilos del formulario para añadir una valoración */
+    #openCreateValoracion {
+        background-color: #ffcc00;
+        padding: 10px;
+        font-size: 1.2em;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    #openCreateValoracion:hover {
+        background-color: #e6b800;
+    }
+
+    /* Estilos del diálogo para crear una valoración */
+    #createValoracion {
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 400px;
+        max-width: 100%;
+        display: none; /* Iniciado oculto */
+    }
+
+    #createValoracion input[type="number"],
+    #createValoracion input[type="text"],
+    #createValoracion textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    #createValoracion input[type="submit"] {
+        background-color: #ffcc00;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    #createValoracion input[type="submit"]:hover {
+        background-color: #e6b800;
+    }
+
+    #cancelButton {
+        background-color: transparent;
+        border: none;
+        padding: 10px;
+        font-size: 1em;
+        cursor: pointer;
+        color: #ffcc00;
+        text-decoration: underline;
+    }
+
+    #cancelButton:hover {
+        color: #e6b800;
+    }
+    
+    #search-orders-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+#search-parameters-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 30px;
+}
+
+#orders-container {
+    margin-top: 20px;
+}
+
+.filter-section {
+    margin-bottom: 20px;
+}
+
+.filter-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.filter-section label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+#from-date, #to-date {
+    margin: 5px 0;
+    padding: 8px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="radio"] {
+    margin-right: 10px;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+#order-box {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+#order-data {
+    flex-grow: 1;
+}
+
+#order-data h2 {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+#order-data h4 {
+    font-size: 1rem;
+    color: #777;
+}
+
+#lineas-box {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#linea-box {
+    width: 200px;
+    margin: 10px;
+    text-align: center;
+}
+
+#linea-box img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+#linea-box h2 {
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
