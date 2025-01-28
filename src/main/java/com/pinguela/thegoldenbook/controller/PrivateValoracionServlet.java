@@ -76,7 +76,7 @@ public class PrivateValoracionServlet extends HttpServlet {
 			valoracion.setNumeroEstrellas(puntuacion);
 			
 			try {
-				valoracionService.create(valoracion);
+				valoracionService.create(valoracion, ((Locale)SessionManager.getAttribute(request, AttributeNames.LOCALE)).getLanguage());
 				
 				Results<ValoracionDTO> valoraciones = valoracionService.findByLibro(libroId, 1, Integer.MAX_VALUE);
 				request.setAttribute(AttributeNames.VALORACIONES, valoraciones.getPage());
