@@ -11,6 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DR6X67B92N"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-DR6X67B92N'); </script>
 <meta charset="UTF-8">
 <title>The Golden Book</title>
 
