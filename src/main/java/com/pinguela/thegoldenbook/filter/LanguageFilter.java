@@ -40,22 +40,39 @@ public class LanguageFilter extends HttpFilter implements Filter {
 
     HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-    // Excluir 'version.html' del procesamiento del filtro
     String uri = httpRequest.getRequestURI();
     if (uri.endsWith("version.html")) {
         chain.doFilter(request, response);
-        return; // No continuar con el procesamiento del filtro
+        return; 
     }
 
-    // Lógica existente para procesar otros recursos
+    
     String locale = CookieManager.getValue(httpRequest, "locale");
-
+    
+    logger.info("Locale from the cookie: "+locale);
+    
     if (locale != null) {
-        SessionManager.setAttribute(httpRequest, "locale", new Locale(locale));
+    	
+    	boolean flag = false;
+    	
+    	for(String checkedLocale : SUPPORTED_LOCALES) {
+    		if(locale.equalsIgnoreCase(checkedLocale)) {
+    			flag = true;
+    		}
+    	}
+    	
+    	if(!flag) {
+    		locale = LOCALE_DEFAULT;
+    	}
+    	
+    	SessionManager.setAttribute(httpRequest, "locale", Locale.forLanguageTag(locale));
+    	
     } else {
         String idiomas = httpRequest.getHeader("Accept-Language");
         List<String> browserIdiomas = com.pinguela.thegoldenbook.utils.LocaleUtils.getSupportedLocales(idiomas);
-
+        
+        logger.info("Languages from the browser: "+browserIdiomas);
+        
         boolean localeFound = false;
         if (SUPPORTED_LOCALES != null && SUPPORTED_LOCALES.length > 0) {
             for (String browserIdioma : browserIdiomas) {
@@ -75,6 +92,7 @@ public class LanguageFilter extends HttpFilter implements Filter {
 
         if (!localeFound) {
             SessionManager.setAttribute(httpRequest, "locale", new Locale(LOCALE_DEFAULT));
+            logger.info("Default locale: "+new Locale(LOCALE_DEFAULT));
         }
     }
 
