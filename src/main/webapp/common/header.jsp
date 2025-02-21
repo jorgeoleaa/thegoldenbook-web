@@ -92,8 +92,6 @@ svg {
 					</svg>
 					</button>
 
-
-
 				</form>
 
 				<c:choose>
